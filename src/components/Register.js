@@ -49,6 +49,7 @@ const Register = () =>
       const{name,value} = e.target;
       setData({...userdata,[name]:value})
   }
+
   const register = async (formData) => 
   {
       const reqdata =
@@ -56,7 +57,7 @@ const Register = () =>
         username: formData.username,
         password: formData.password,
       }
-      if(validateInput(formData))
+      if(!validateInput(formData)) return;
       {
         const res = await axios.post(`${config.endpoint}/auth/register`,reqdata);
         console.log("Result",res);

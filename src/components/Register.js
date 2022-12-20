@@ -106,28 +106,27 @@ const Register = () =>
    */
   const validateInput = (data) => 
   {
-    if(data["username"] === " ")
-    {
-      enqueueSnackbar("Username is a required field",{ variant:"Warning"});
+    if (!data.username) {
+      enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
     }
-    else if(data["username"].length<6)
-    {
-      enqueueSnackbar("Username must be at least 6 characters",{ variant:"Warning"});
+    if (data.username.length < 6) {
+      enqueueSnackbar("Username must be at least 6 characters", {
+        variant: "warning",
+      });
       return false;
     }
-    else if(data["password"] === "")
-    {
-      enqueueSnackbar("Password is a required field",{ variant:"Warning"});
+    if (!data.password) {
+      enqueueSnackbar("Password is a required field", { variant: "warning" });
       return false;
     }
-    else if(data["password"].length<6)
-    {
-      enqueueSnackbar("Password must be at least 6 characters",{ variant:"Warning"});
-      return false
+    if (data.password.length < 6) {
+      enqueueSnackbar("Password must be at least 6 characters", {
+        variant: "warning",
+      });
+      return false;
     }
-    else if (data["password"] !== data["confirmPassword"]) 
-    {
+    if (data.password !== data.confirmPassword) {
       enqueueSnackbar("Passwords do not match", { variant: "warning" });
       return false;
     }

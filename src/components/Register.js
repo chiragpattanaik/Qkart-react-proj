@@ -50,49 +50,22 @@ const Register = () =>
       setData({...userdata,[name]:value})
   }
 
-  const register = async (formData) => 
-  {
-      const reqdata =
-      {
-        username: formData.username,
-        password: formData.password,
-      }
-      if(!validateInput(formData)) return;
-      {
-        const res = await axios.post(`${config.endpoint}/auth/register`,reqdata);
-        console.log("Result",res);
-      }
-      else
-      {
-        setData({
-          username:"",
-          password:"",
-          confirmPassword:"",
-          success:false
-        })
-      }
-     
-      try
-      {
-        enqueueSnackbar("Registered successfully",{ variant:"success"});
-        setData({...userdata,success:true})
-      }
-      catch(e)
-      {
-        if (e.response && e.response.status === 400)
-        {
-          enqueueSnackbar(e.response.data.message, {variant:"error"});
-        }
-        else
-        {
-          enqueueSnackbar("Something went wrong. Check that the backened is running, reachable and returns valid JSON",{variant:"error"});
-        };
-      }
-
-
+  const register = async(formData)=>{
+    if (!validateInput(formData)) return;
+    try
+    {
+      await axios.post(`${config.endpoint}/auth/register`,{username: formData.username,password: formData.password});
+      enqueueSnackbar("Registered Successfully",{variant:"success"});
+    }
+    catch (e)
+    {
+      if (e.response && e.response.status === 400){
+        enqueueSnackbar(e.response.data.message, {variant:"error"});
+      }else{
+        enqueueSnackbar("Something went wrong. Check that the backened is running, reachable and returns valid JSON",{variant:"error"});
+      };
+    }
   };
-
-
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
   /**
    * Validate the input values so that any bad or illegal values are not passed to the backend.

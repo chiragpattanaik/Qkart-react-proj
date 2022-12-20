@@ -76,10 +76,16 @@ const Register = () =>
         enqueueSnackbar("Registered successfully",{ variant:"success"});
         setData({...userdata,success:true})
       }
-      catch(err)
+      catch(e)
       {
-        enqueueSnackbar(err,{ variant:"Error"})
-        setData({...userdata,success:false})
+        if (e.response && e.response.status === 400)
+        {
+          enqueueSnackbar(e.response.data.message, {variant:"error"});
+        }
+        else
+        {
+          enqueueSnackbar("Something went wrong. Check that the backened is running, reachable and returns valid JSON",{variant:"error"});
+        };
       }
 
 

@@ -53,8 +53,8 @@ const Register = () =>
   {
       const reqdata =
       {
-        username: userdata.username,
-        password: userdata.password,
+        username: formData.username,
+        password: formData.password,
       }
       if(validateInput(formData))
       {
@@ -150,6 +150,7 @@ const Register = () =>
             variant="outlined"
             title="Username"
             name="username"
+            value={userdata.username}
             onChange={handlechange}
             placeholder="Enter Username"
             fullWidth
@@ -161,6 +162,7 @@ const Register = () =>
             name="password"
             type="password"
             onChange={handlechange}
+            value={userdata.password}
             helperText="Password must be atleast 6 characters length"
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
@@ -171,10 +173,11 @@ const Register = () =>
             label="Confirm Password"
             name="confirmPassword"
             onChange={handlechange}
+            value={userdata.confirmPassword}
             type="password"
             fullWidth
           />
-           <Button className="button" variant="contained" onClick={(userdata)=>register}>
+           <Button className="button" variant="contained" onClick={()=>register(userdata)}>
             Register Now
            </Button>
           <p className="secondary-action">

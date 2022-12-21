@@ -30,12 +30,7 @@ const Login = () => {
    * }
    *
    * Example for failed response from backend:
-   * HTTP 400
-   * {
-   *      "success": false,
-   *      "message": "Password is incorrect"
-   * }
-   *
+
    */
    const[userdata,setData] = useState
    ({
@@ -115,7 +110,8 @@ const Login = () => {
    * -    `username` field in localStorage can be used to store the username that the user is logged in as
    * -    `balance` field in localStorage can be used to store the balance amount in the user's wallet
    */
-  const persistLogin = (token, username, balance) => {
+  const persistLogin = (token, username, balance) => 
+  {
   };
 
   return (

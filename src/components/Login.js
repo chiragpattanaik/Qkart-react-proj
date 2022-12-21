@@ -86,12 +86,12 @@ const Login = () => {
    */
   const validateInput = (data) =>
    {
-    if (data.username === "") 
+    if (!data.username) 
     {
       enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
     }
-    if (data.password === "") 
+    if (!data.password) 
     {
       enqueueSnackbar("Password is a required field", { variant: "warning" });
       return false;
@@ -150,7 +150,7 @@ const Login = () => {
             value={userdata.password}
             fullWidth
           />
-           <Button className="button" variant="contained">
+           <Button className="button" variant="contained" onClick={()=>login(userdata)}>
             Login to Qkart
            </Button>
            <p className="secondary-action">

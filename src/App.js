@@ -1,3 +1,4 @@
+import Login from "./components/Login";
 import Register from "./components/Register";
 import ipConfig from "./ipConfig.json";
 
@@ -8,7 +9,8 @@ export const config = {
 function App() {
   return (
     <div className="App">
-          <Register />
+         {/* <Register /> */}
+         <Login />
     </div>
   );
 }

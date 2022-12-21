@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { SnackbarProvider } from "notistack";
-import { createTheme } from '@mui/material/styles';
 import {ThemeProvider} from '@mui/material/styles';
 import theme from './theme';
 

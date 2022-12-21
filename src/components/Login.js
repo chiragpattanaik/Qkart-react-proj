@@ -51,6 +51,22 @@ const Login = () => {
 
   const login = async (formData) => 
   {
+    if (!validateInput(formData)) return;
+    try
+    {
+      await axios.post(`${config.endpoint}/auth/register`,{username: formData.username,password: formData.password});
+      enqueueSnackbar("Registered Successfully",{variant:"success"});
+    }
+    catch (e)
+    {
+      if (e.response && e.response.status === 400){
+        enqueueSnackbar(e.response.data.message, {variant:"error"});
+      }
+      else
+      {
+        enqueueSnackbar("Something went wrong. Check that the backened is running, reachable and returns valid JSON",{variant:"error"});
+      };
+    }
   };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Validate the input
@@ -68,7 +84,19 @@ const Login = () => {
    * -    Check that username field is not an empty value - "Username is a required field"
    * -    Check that password field is not an empty value - "Password is a required field"
    */
-  const validateInput = (data) => {
+  const validateInput = (data) =>
+   {
+    if (data.username === "") 
+    {
+      enqueueSnackbar("Username is a required field", { variant: "warning" });
+      return false;
+    }
+    if (data.password === "") 
+    {
+      enqueueSnackbar("Password is a required field", { variant: "warning" });
+      return false;
+    }
+    return true;
   };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Persist user's login information

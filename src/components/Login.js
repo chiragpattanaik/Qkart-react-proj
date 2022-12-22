@@ -49,7 +49,7 @@ const Login = () => {
     if (!validateInput(formData)) return;
     try
     {
-      const res = await axios.post(`${config.endpoint}/api/v1/auth/login`,{username: formData.username,password: formData.password});
+      const res = await axios.post(`${config.endpoint}git add ./auth/login`,{username: formData.username,password: formData.password});
       enqueueSnackbar("Registered Successfully",{variant:"success"});
       console.log(res);
       

@@ -46,13 +46,14 @@ const Login = () => {
 
   const login = async (formData) => 
   {
-    if (!validateInput(formData)) return;
+    if (!validateInput(formData)) 
+    return;
     try
     {
       const res = await axios.post(`${config.endpoint}/auth/login`,{username: formData.username,password: formData.password});
-      const {username,password,token} = res.data;
-      persistLogin(username,password,token);
-      enqueueSnackbar("Registered Successfully",{variant:"success"});
+      const {token,username,balance} = res.data;
+      persistLogin(token,username,balance);
+      enqueueSnackbar("Logged in successfully",{variant:"success"});
       console.log(res);
       
     }
@@ -63,7 +64,7 @@ const Login = () => {
       }
       else
       {
-        enqueueSnackbar("Something went wrong. Check that the backened is running, reachable and returns valid JSON",{variant:"error"});
+        enqueueSnackbar("Something went wrong. Check that the backend is running, reachable and returns valid JSON.n",{variant:"error"});
       };
     }
   };
@@ -116,9 +117,9 @@ const Login = () => {
    */
   const persistLogin = (token, username, balance) => 
   {
-    localStorage.setItem("token",token)
-    localStorage.setItem("username",username)
-    localStorage.setItem("balance",balance)
+    localStorage.setItem("token", token);
+    localStorage.setItem("username", username);
+    localStorage.setItem("balance", balance);
   };
 
   return (

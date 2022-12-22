@@ -1,6 +1,5 @@
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Products  from "./components/Products ";
 import ipConfig from "./ipConfig.json";
 import { Route, Switch } from "react-router";
 
@@ -19,9 +18,9 @@ function App() {
     <Route path="/register">
       <Register />
     </Route>
-    <Route path="/Products">
+    {/* <Route path="/Products">
       <Products  />
-    </Route>
+    </Route> */}
   </Switch>
     </div>
   );

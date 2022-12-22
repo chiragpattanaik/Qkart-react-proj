@@ -49,8 +49,10 @@ const Login = () => {
     if (!validateInput(formData)) return;
     try
     {
-      await axios.post(`${config.endpoint}/auth/register`,{username: formData.username,password: formData.password});
+      const res = await axios.post(`${config.endpoint}/api/v1/auth/login`,{username: formData.username,password: formData.password});
       enqueueSnackbar("Registered Successfully",{variant:"success"});
+      console.log(res);
+      
     }
     catch (e)
     {
@@ -112,6 +114,9 @@ const Login = () => {
    */
   const persistLogin = (token, username, balance) => 
   {
+    localStorage.setItem("token",token)
+    localStorage.setItem("username",username)
+    localStorage.setItem("balance",balance)
   };
 
   return (

@@ -53,7 +53,7 @@ const Login = () => {
       const {username,password,token} = res.data;
       persistLogin(username,password,token);
       enqueueSnackbar("Registered Successfully",{variant:"success"});
-      console.log(resgit add );
+      console.log(res);
       
     }
     catch (e)

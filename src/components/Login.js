@@ -159,7 +159,7 @@ const Login = () => {
            </Button>
            <p className="secondary-action">
             Don’t have an account?{" "}
-             <Link className="link" to="/login">
+             <Link className="link" to="/register">
              Register now
              </Link>
           </p>

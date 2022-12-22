@@ -2,7 +2,7 @@ import { Button, CircularProgress, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { Link } from "react-router-dom";
+import { Link,useHistory} from "react-router-dom";
 import React, { useState } from "react";
 import { config } from "../App";
 import Footer from "./Footer";
@@ -12,6 +12,7 @@ import "./Register.css";
 const Register = () => 
 {
   const { enqueueSnackbar } = useSnackbar();
+  const history =  useHistory();
 
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
@@ -51,12 +52,14 @@ const Register = () =>
       setData({...userdata,[name]:value})
   }
 
-  const register = async(formData)=>{
+  const register = async(formData)=>
+  {
     if (!validateInput(formData)) return;
     try
     {
       await axios.post(`${config.endpoint}/auth/register`,{username: formData.username,password: formData.password});
       enqueueSnackbar("Registered Successfully",{variant:"success"});
+      history.push("/login",{from:"Register"})
     }
     catch (e)
     {
@@ -165,7 +168,7 @@ const Register = () =>
            </Button>
           <p className="secondary-action">
             Already have an account?{" "}
-             <Link className="link" to="/register">
+             <Link className="link" to="/login">
               Login here
              </Link>
           </p>

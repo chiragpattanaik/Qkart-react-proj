@@ -50,8 +50,10 @@ const Login = () => {
     try
     {
       const res = await axios.post(`${config.endpoint}/auth/login`,{username: formData.username,password: formData.password});
+      const {username,password,token} = res.data;
+      persistLogin(username,password,token);
       enqueueSnackbar("Registered Successfully",{variant:"success"});
-      console.log(res);
+      console.log(resgit add );
       
     }
     catch (e)

@@ -2,6 +2,7 @@ import { Button, CircularProgress, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { config } from "../App";
 import Footer from "./Footer";
@@ -164,9 +165,9 @@ const Register = () =>
            </Button>
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="/login">
+             <Link className="link" to="/register">
               Login here
-             </a>
+             </Link>
           </p>
         </Stack>
       </Box>

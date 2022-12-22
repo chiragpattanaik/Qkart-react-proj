@@ -159,9 +159,9 @@ const Login = () => {
            </Button>
            <p className="secondary-action">
             Don’t have an account?{" "}
-             <a className="link" href="/login">
+             <Link className="link" to="/login">
              Register now
-             </a>
+             </Link>
           </p>
         </Stack>
       

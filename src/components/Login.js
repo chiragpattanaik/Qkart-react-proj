@@ -11,6 +11,7 @@ import "./Login.css";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const history =  useHistory();
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Fetch the API response
   /**
@@ -54,6 +55,7 @@ const Login = () => {
       const {token,username,balance} = res.data;
       persistLogin(token,username,balance);
       enqueueSnackbar("Logged in successfully",{variant:"success"});
+      history.push("/")
       console.log(res);
       
     }
@@ -129,6 +131,7 @@ const Login = () => {
       justifyContent="space-between"
       minHeight="100vh"
     >
+
       <Header hasHiddenAuthButtons />
       <Box className="content">
         <Stack spacing={2} className="form">

@@ -5,11 +5,11 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import "./Header.css";
 
-const Header = ({ children, hasHiddenAuthButtons }) => {
+const Header = ({ children, hasHiddenAuthButtons}) => 
+{
   const history = useHistory();
   const userdata = localStorage.getItem("username");
   const islogin = userdata ? true : false;
-
 
   const logout = () =>
   {
@@ -23,7 +23,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     history.push("/");
   }
 
-  // eslint-disable-next-line no-lone-blocks
+
 
   return (
     <Box className="header">
@@ -48,24 +48,14 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
         </Box>
       )}
 
-      {/* 
-        { 
-          
-          (islogin) &&
-          (<Box>
-            <Avatar alt="User avatar" src="avatar.png"/>
-            <Box>{userdata}</Box>
-            <Button variant="text">Logout</Button>
-          </Box>)
-          
-        } */}
+
 
       {islogin && (
-        <Stack direction="row" justifyCenter="center" alignItems="center">
+        <Stack direction="row" justifyContent="center" alignItems="center">
           <div
-            style={{ display: "flex", alignItems: "center", pointer: "center" }}
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
           >
-            <Avatar alt="User avatar" src="avatar.png" />
+            <Avatar alt={userdata} src="avatar.png" />
             <Box>{userdata}</Box>
             <Button variant="text" onClick={logout}>Logout</Button>
           </div>

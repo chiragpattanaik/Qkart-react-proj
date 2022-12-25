@@ -21,23 +21,8 @@ const Register = () =>
    * - Function to be called when the user clicks on the register button or submits the register form
    *
    * @param {{ username: string, password: string, confirmPassword: string }} formData
-   *  Object with values of username, password and confirm password user entered to register
-   *
-   * API endpoint - "POST /auth/register"
-   *
-   * Example for successful response from backend for the API call:
-   * HTTP 201
-   * {
-   *      "success": true,
-   * }
-   *
-   * Example for failed response from backend for the API call:
-   * HTTP 400
-   * {
-   *      "success": false,
-   *      "message": "Username is already taken"
-   * }
-   */
+  
+  /** */
 
   const[userdata,setData] = useState
   ({

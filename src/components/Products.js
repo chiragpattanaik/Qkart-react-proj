@@ -6,6 +6,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import ProductCard from "./ProductCard";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Products.css";
+
 
 // Definition of Data Structures used
 /**
@@ -27,7 +29,9 @@ import "./Products.css";
  */
 
 
-const Products = () => {
+const Products = () => 
+{
+  const { enqueueSnackbar } = useSnackbar();
 
   // TODO: CRIO_TASK_MODULE_PRODUCTS - Fetch products data and store it
   /**
@@ -66,8 +70,42 @@ const Products = () => {
    *      "message": "Something went wrong. Check the backend console for more details"
    * }
    */
+   const [data, setData] = useState({
+    data: [],
+  });
+  const [load, setLoad] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [search,setSearch] = useState(false);
+
+
+    // {useEffect hook for the peformApicall}
+    useEffect(() => {
+      performAPICall();
+    }, []);
+     // {useEffect hook for the peformApicall}
+
+
   const performAPICall = async () => {
+    setLoad(true);//this boolean value indicates the start fetching of the data from the api
+    try {
+      const response = await axios.get(`${config.endpoint}/products`);
+      setData((val) => ({ ...val, data: response.data }));
+      setSuccess(true);
+      setLoad(false);// indicating that the API call has completed.
+    } 
+    catch (error) 
+    {
+      if (error.response) 
+      {
+        enqueueSnackbar(error.response.statusText, { variant: "warning" });
+      }
+      setLoad(false);
+    }
   };
+
+
+
+
 
   // TODO: CRIO_TASK_MODULE_PRODUCTS - Implement search logic
   /**
@@ -83,7 +121,25 @@ const Products = () => {
    * API endpoint - "GET /products/search?value=<search-query>"
    *
    */
-  const performSearch = async (text) => {
+   const performSearch = async (text) => {
+    const searchProduct = text.target.value;
+    setSearch(true)//inidcates start of fetching the data from api using api call.
+    try 
+    {
+      const response = await axios(`${config.endpoint}/products/search?value=${searchProduct}`);
+      setData((val) => ({ ...val, data: response.data }));
+      setSearch(false);//inidcates that the Api call is completed.
+      setSuccess(true);
+    } 
+    catch (error) 
+    {
+      
+      if (error.response) 
+      {
+        enqueueSnackbar(error.response.statusText, { variant: "warning" });
+      }
+      setSuccess(false);
+    }
   };
 
   // TODO: CRIO_TASK_MODULE_PRODUCTS - Optimise API calls with debounce search implementation
@@ -98,7 +154,8 @@ const Products = () => {
    *    Timer id set for the previous debounce call
    *
    */
-  const debounceSearch = (event, debounceTimeout) => {
+  const debounceSearch = (event, debounceTimeout) => 
+  {
   };
 
 
@@ -111,6 +168,22 @@ const Products = () => {
     <div>
       <Header>
         {/* TODO: CRIO_TASK_MODULE_PRODUCTS - Display search bar in the header for Products page */}
+        <TextField
+            className="search-desktop"
+            size="small"
+            sx={{ width: "45vw" }}
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            onChange={(text)=>performSearch(text)}
+            placeholder="Search for items/categories"
+            name="search"
+          />
 
       </Header>
 
@@ -139,6 +212,75 @@ const Products = () => {
            </Box>
          </Grid>
        </Grid>
+
+      
+      {/* Showing loading products CircularProgress while api is fetching the data */}
+
+      {load === true && (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              className="loading"
+            >
+              <Grid item>
+                <CircularProgress size={40} color="success" />
+              </Grid>
+              <Grid item>
+                <div>Loading Products...</div>
+              </Grid>
+            </Grid>
+          )}
+
+           {/* Showing loading products CircularProgress while api is fetching the data */}
+
+
+          {/* If api fails to fetch the data from the url */}
+
+          {
+        !load && !success && 
+        (
+          <Grid container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          className="loading">
+            <Grid item>
+            <div><SentimentDissatisfied /><p>No products found</p></div>
+          </Grid>
+          </Grid>
+        )
+      }
+   
+
+         {/* If api fails to fetch the data from the url */}
+   
+
+      
+   
+
+
+
+         {/* Upon successful fethcing the data from the api and display it as in the form of cards using grid */}
+
+         <Grid item ml={1} my={2}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+            >
+              {success === true &&
+                data.data.map((item) => (
+                  <Grid item xs={6} sm={6} md={3} key={item._id}>
+                    <ProductCard product={item}  />
+                  </Grid>
+                ))}
+            </Grid>
+          </Grid>
+
+
+          {/* Upon successful fethcing the data from the api and display it as in the form of cards using grid */}
       <Footer />
     </div>
   );

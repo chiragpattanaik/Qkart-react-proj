@@ -156,6 +156,9 @@ const Products = () =>
    */
   const debounceSearch = (event, debounceTimeout) => 
   {
+    setTimeout(()=>{
+      performSearch()
+    },debounceTimeout);
   };
 
 
@@ -180,7 +183,7 @@ const Products = () =>
                 </InputAdornment>
               ),
             }}
-            onChange={(text)=>performSearch(text)}
+            onChange={(event)=>debounceSearch (event,500)}
             placeholder="Search for items/categories"
             name="search"
           />

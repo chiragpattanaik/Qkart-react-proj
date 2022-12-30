@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
+import Cart from "./Cart";
 import "./Products.css";
 
 
@@ -70,20 +71,23 @@ const Products = () =>
    *      "message": "Something went wrong. Check the backend console for more details"
    * }
    */
-   const [data, setData] = useState({
-    data: [],
-  });
+
+   const [data, setData] = useState({data: []});
   const [load, setLoad] = useState(false);
   const [success, setSuccess] = useState(false);
   const [search,setSearch] = useState(false);
   const [delay, setDelay] = useState(0);
+  const userdata = localStorage.getItem("username");
+  const islogin = userdata ? true : false;
 
 
-    // {useEffect hook for the peformApicall}
+
+   //useffect hook 
     useEffect(() => {
       performAPICall();
     }, []);
-     // {useEffect hook for the peformApicall}
+    //useffect hook 
+   
 
 
   const performAPICall = async () => {
@@ -165,15 +169,12 @@ const Products = () =>
 
 
 
-
-
-
-
   return (
     <div>
-      <Header>
+      <Header children>
         {/* TODO: CRIO_TASK_MODULE_PRODUCTS - Display search bar in the header for Products page */}
-        <TextField
+        <Box>
+          <TextField
             className="search-desktop"
             size="small"
             sx={{ width: "45vw" }}
@@ -185,14 +186,15 @@ const Products = () =>
                 </InputAdornment>
               ),
             }}
-            onChange={(event)=>debounceSearch (event,500)}
+            onChange={(e) => debounceSearch(e, 500)}
             placeholder="Search for items/categories"
             name="search"
           />
-
+        </Box>
       </Header>
 
       {/* Search view for mobiles */}
+
       <TextField
         className="search-mobile"
         size="small"
@@ -204,24 +206,24 @@ const Products = () =>
             </InputAdornment>
           ),
         }}
+        onChange={(e) => debounceSearch(e, 500)}
         placeholder="Search for items/categories"
         name="search"
       />
-       <Grid container>
-         <Grid item className="product-grid">
-           <Box className="hero">
-             <p className="hero-heading">
-               India’s <span className="hero-highlight">FASTEST DELIVERY</span>{" "}
-               to your door step
-             </p>
-           </Box>
-         </Grid>
-       </Grid>
 
-      
-      {/* Showing loading products CircularProgress while api is fetching the data */}
+      <Grid container mb={2}>
+        <Grid item md={islogin ? 9 : 12}>
+          <Grid item className="product-grid">
+            <Box className="hero">
+              <p className="hero-heading">
+                India’s <span className="hero-highlight">FASTEST DELIVERY</span>{" "}
+                to your door step
+              </p>
+            </Box>
+          </Grid>
 
-      {load === true && (
+          {/* when the api is fetchingn the products from backend it displays loading icon */}
+          {load === true && (
             <Grid
               container
               direction="column"
@@ -238,38 +240,25 @@ const Products = () =>
             </Grid>
           )}
 
-           {/* Showing loading products CircularProgress while api is fetching the data */}
-
-
-          {/* If api fails to fetch the data from the url */}
-
-          {
-        !load && !success && 
-        (
-          <Grid container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          className="loading">
-            <Grid item>
-            <div><SentimentDissatisfied /><p>No products found</p></div>
-          </Grid>
-          </Grid>
-        )
-      }
-   
-
-         {/* If api fails to fetch the data from the url */}
-   
-
-      
-   
+          {!load && !success && (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              className="loading"
+            >
+              <Grid item>
+                <div>No Products Found</div>
+              </Grid>
+            </Grid>
+          )}
+           {/* when the api is fetchingn the products from backend it displays loading icon */}
 
 
 
-         {/* Upon successful fethcing the data from the api and display it as in the form of cards using grid */}
-
-         <Grid item ml={1} my={2}>
+          {/* After loading render the product on the page */}
+          <Grid item ml={1} my={2}>
             <Grid
               container
               rowSpacing={1}
@@ -278,14 +267,26 @@ const Products = () =>
               {success === true &&
                 data.data.map((item) => (
                   <Grid item xs={6} sm={6} md={3} key={item._id}>
-                    <ProductCard product={item}  />
+                    <ProductCard product={item} />
                   </Grid>
                 ))}
             </Grid>
           </Grid>
+        </Grid>
+        {/* After loading render the product on the page */}
 
+        
+        {/* Should show cart with items added by the particular user or not */}
+        {islogin && (
 
-          {/* Upon successful fethcing the data from the api and display it as in the form of cards using grid */}
+          <Grid item md={3} xs={12} style={{ backgroundColor: "#E9F5E1" }} mb={2}>
+
+            <Cart />
+
+          </Grid>
+        )}
+      </Grid>
+     {/* Should show cart with items added by the particular user or not */}
       <Footer />
     </div>
   );

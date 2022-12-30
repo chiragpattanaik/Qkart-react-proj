@@ -2,6 +2,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ipConfig from "./ipConfig.json";
 import Products from "./components/Products";
+import Cart from "./components/Cart";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
@@ -11,8 +12,7 @@ export const config = {
 function App() {
   return (
     <div className="App">
-         {/* <Register /> */}
-<Switch>
+  <Switch>
     <Route exact path="/login">
       <Login />
     </Route>
@@ -23,7 +23,9 @@ function App() {
       <Products />
     </Route>
 </Switch>
+
     </div>
+
   );
 }
 

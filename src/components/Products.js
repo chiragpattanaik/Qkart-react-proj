@@ -76,6 +76,7 @@ const Products = () =>
   const [load, setLoad] = useState(false);
   const [success, setSuccess] = useState(false);
   const [search,setSearch] = useState(false);
+  const [delay, setDelay] = useState(0);
 
 
     // {useEffect hook for the peformApicall}
@@ -154,11 +155,12 @@ const Products = () =>
    *    Timer id set for the previous debounce call
    *
    */
-  const debounceSearch = (event, debounceTimeout) => 
-  {
-    setTimeout(()=>{
-      performSearch()
-    },debounceTimeout);
+   const debounceSearch = (event, debounceTimeout) => {
+    if (delay !== 0) {
+      clearTimeout(delay);
+    }
+    const timer = setTimeout(() => performSearch(event), debounceTimeout);
+    setDelay(timer);
   };
 
 

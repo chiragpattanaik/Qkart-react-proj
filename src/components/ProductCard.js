@@ -33,7 +33,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
           fullWidth
           variant="contained"
           startIcon={<AddShoppingCartOutlined />}
-          onClick={handleAddToCart}
+          onClick={()=>handleAddToCart(product)}
         >
           ADD TO CART 
         </Button>

@@ -79,12 +79,16 @@ const Products = () =>
   const [delay, setDelay] = useState(0);
   const userdata = localStorage.getItem("username");
   const islogin = userdata ? true : false;
+  const token = localStorage.getItem("token");
+  console.log("token=>",token)
 
 
 
    //useffect hook 
+  
     useEffect(() => {
       performAPICall();
+      fetchCart(token);
     }, []);
     //useffect hook 
    
@@ -147,6 +151,7 @@ const Products = () =>
     }
   };
 
+
   // TODO: CRIO_TASK_MODULE_PRODUCTS - Optimise API calls with debounce search implementation
   /**
    * Definition for debounce handler
@@ -167,6 +172,159 @@ const Products = () =>
     setDelay(timer);
   };
 
+
+
+  const fetchCart = async (token) => 
+  {
+      if (!token ) return;
+  else{
+    try {
+      // TODO: CRIO_TASK_MODULE_CART - Pass Bearer token inside "Authorization" header to get data from "GET /cart" API and return the response data
+      const response = await axios.get(`${config.endpoint}/cart`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      return response.data;
+    } catch (e) {
+      if (e.response && e.response.status === 400) {
+        enqueueSnackbar(e.response.data.message, { variant: "error" });
+      } else {
+        enqueueSnackbar(
+          "Could not fetch cart details. Check that the backend is running, reachable and returns valid JSON.",
+          {
+            variant: "error",
+          }
+        );
+      }
+      return null;
+    }
+  }
+      
+    };
+
+   
+
+  // TODO: CRIO_TASK_MODULE_CART - Return if a product already exists in the cart
+  /**
+   * Return if a product already is present in the cart
+   *
+   * @param { Array.<{ productId: String, quantity: Number }> } items
+   *    Array of objects with productId and quantity of products in cart
+   * @param { String } productId
+   *    Id of a product to be checked
+   *
+   * @returns { Boolean }
+   *    Whether a product of given "productId" exists in the "items" array
+   *
+   */
+  const isItemInCart = (items, productId) => 
+  {
+    let ispresent = false;
+    items.map((ele) =>
+    { 
+      if(ele.productId === productId)
+      {
+        ispresent = true;
+      }
+
+    })
+    return ispresent;
+   
+  };
+ 
+  /**
+   * Perform the API call to add or update items in the user's cart and update local cart data to display the latest cart
+   *
+   * @param {string} token
+   *    Authentication token returned on login
+   * @param { Array.<{ productId: String, quantity: Number }> } items
+   *    Array of objects with productId and quantity of products in cart
+   * @param { Array.<Product> } products
+   *    Array of objects with complete data on all available products
+   * @param {string} productId
+   *    ID of the product that is to be added or updated in cart
+   * @param {number} qty
+   *    How many of the product should be in the cart
+   * @param {boolean} options
+   *    If this function was triggered from the product card's "Add to Cart" button
+   *
+   * Example for successful response from backend:
+   * HTTP 200 - Updated list of cart items
+   * [
+   *      {
+   *          "productId": "KCRwjF7lN97HnEaY",
+   *          "qty": 3
+   *      },
+   *      {
+   *          "productId": "BW0jAAeDJmlZCF8i",
+   *          "qty": 1
+   *      }
+   * ]
+   *
+   * Example for failed response from backend:
+   * HTTP 404 - On invalid productId
+   * {
+   *      "success": false,
+   *      "message": "Product doesn't exist"
+   * }
+   */
+  const addToCart = async (token,items,products,productId,qty,options = { preventDuplicate: false }) => 
+  {
+    if(token)
+    {
+      if(isItemInCart(items))
+      {
+        enqueueSnackbar("Item already in cart. Use the cart sidebar to update quantity or remove item",{ variant: "warning" });
+      }
+      else
+      {
+        addToCartMain(productId,qty);
+      }
+    }
+    else
+    {
+      enqueueSnackbar("Login to add an item to the Cart",{ variant: "warning" });
+    }
+    
+
+  };
+
+  const addToCartMain=async(productId,qty,token) =>
+  {
+    if (!token ) return;
+else{
+  try {
+    // TODO: CRIO_TASK_MODULE_CART - Pass Bearer token inside "Authorization" header to get data from "GET /cart" API and return the response data
+    const response = await axios.post(`${config.endpoint}/cart`, 
+    {
+      productId:productId,
+      qty:qty
+
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (e) {
+    if (e.response && e.response.status === 400) {
+      enqueueSnackbar(e.response.data.message, { variant: "error" });
+    } else {
+      enqueueSnackbar(
+        "Could not fetch cart details. Check that the backend is running, reachable and returns valid JSON.",
+        {
+          variant: "error",
+        }
+      );
+    }
+    return null;
+  }
+}
+    
+  };
 
 
   return (
@@ -293,3 +451,5 @@ const Products = () =>
 };
 
 export default Products;
+
+

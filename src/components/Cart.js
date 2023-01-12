@@ -82,7 +82,8 @@ export const generateCartItemsFrom = (cartData, productsData) => {
 export const getTotalCartValue = (items = []) => {
 
   let total = 0;
-  if (items.length > 0) {
+  if (items.length > 0) 
+  {
     for (let i = 0; i < items.length; i++) {
       total += items[i].cost * items[i].qty;
     }

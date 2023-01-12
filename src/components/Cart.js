@@ -60,11 +60,10 @@ export const generateCartItemsFrom = (cartData, productsData) => {
     const product = products.filter((product) => {
       return product._id === data.productId;
     });
-    // console.log(data)
-    const details = {
-      ...data,
-      ...product[0],
-    };
+    // console.log("DATA=>",data);
+    console.log("PRODUCT DATA=>",product[0])
+    const details = {...data,...product[0],};
+    console.log("DETAILS=>",details);
     cartItems.push(details);
   });
   return cartItems;
@@ -244,19 +243,12 @@ const ItemQuantity = ({
  *
  */
 
-const Cart = ({ isReadOnly = false, products, items = [], handleQuantity }) => {
+const Cart = ({ isReadOnly = false, products, items = [], handleQuantity }) => 
+{
 
   // const [readOnly, setReadOnly] = useState("");
   console.log("readOnly===>>", items);
-
-  // if(readOnly !== isReadOnly) {
-  //   setReadOnly(isReadOnly);
-  // }
-
   const history = useHistory();
-  // {
-  //   console.log("itmea->", items);
-  // }
 
   if (!items.length) {
     return (
@@ -274,7 +266,8 @@ const Cart = ({ isReadOnly = false, products, items = [], handleQuantity }) => {
       <Box className="cart">
         {/* TODO: CRIO_TASK_MODULE_CART - Display view for each cart item with non-zero quantity */}
 
-        {items.map((item) => (
+        {
+        items.map((item) => (
           <Box display="flex" alignItems="flex-start" padding="1rem" key={item._id}>
             <Box className="image-container">
 
@@ -324,7 +317,8 @@ const Cart = ({ isReadOnly = false, products, items = [], handleQuantity }) => {
           </Box>
         </Box>
 
-        {isReadOnly === false && (
+        {isReadOnly === false && 
+        (
 
           <Box display="flex" justifyContent="flex-end" className="cart-footer">
             <Button
@@ -343,7 +337,6 @@ const Cart = ({ isReadOnly = false, products, items = [], handleQuantity }) => {
       </Box>
       <Box className="cart">
         <GetTotalItems items={items} readOnly={isReadOnly} />
-        {/* hello */}
       </Box>
     </>
   );

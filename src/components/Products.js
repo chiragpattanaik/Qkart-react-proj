@@ -103,6 +103,8 @@ const Products = () => {
         }
       });
       // console.log("res->", response)
+      // console.log("res2->", response.data)
+      // console.log("res3->", data.data);
       setData((val) => ({ ...val, items: generateCartItemsFrom(response.data, data.data) }));
 
       // console.log("cart get response->", response.data)
@@ -154,20 +156,22 @@ const Products = () => {
       console.log(100)
     })
     console.log("itemAlreadyPresentInCart", itemAlreadyPresentInCart);
-
    return itemAlreadyPresentInCart;
     // console.log("e", items[0].productId)
     // console.log("pr", productId);
 
   };
 
-  const handleCart = (productid) => {
+  const handleCart = (productid) => 
+  {
+    
     console.log("data.items=>", data.items)
     addToCart(token, data.items, data.data, productid, 1);
   }
 
 
-  const handleQuantity = (itemInCartId, qtyToChange) => {
+  const handleQuantity = (itemInCartId, qtyToChange) => 
+  {
     addToCartMain(itemInCartId, qtyToChange);
   }
 
@@ -209,13 +213,16 @@ const Products = () => {
    */
   const addToCart = async (token, items, products, productId, qty, options = { preventDuplicate: false }) => {
     // console.log("token->", token)
-    if (token) {
+    if (token) 
+    {
       // console.log('clicked')
-      if (!isItemInCart(items, productId)) {
+      if (!isItemInCart(items, productId)) 
+      {
         console.log("clicked", productId);
         addToCartMain(productId, qty)
 
-      } else {
+      } 
+      else {
         enqueueSnackbar(
           "Item already in cart. Use the cart sidebar to update quantity or remove item",
           { variant: "warning" }
@@ -227,6 +234,7 @@ const Products = () => {
       });
     }
   };
+
 
   const addToCartMain = async(productId, qty) => {
     try {
@@ -241,15 +249,18 @@ const Products = () => {
             'Authorization': `Bearer ${token}`,
           }
         }
+        
       )
       console.log("backend cart ->", response.data)
       setData((data) => ({ ...data, items: generateCartItemsFrom(response.data, data.data), }))
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.response) {
         console.log("send item to cart backend->", error.response.statusText);
       }
     }
   }
+
 
   const debounceSearch = (event, debounceTimeout) => {
     if (delay !== 0) {
